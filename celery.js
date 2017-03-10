@@ -380,6 +380,15 @@ function Result(taskid, client) {
                 }).addCallback(function(ok) { ctag = ok.consumerTag; });
             });
     }
+    else if (self.client.conf.backend_type === 'redis' && !self.client.conf.IGNORE_RESULT) {
+      if (!self.client.backend.results.hasOwnProperty(taskid)) {
+        self.client.backend.results[taskid] = self;
+      }
+    }
+    else {
+      debug('Result Ignored...')
+    }
+
 }
 
 util.inherits(Result, events.EventEmitter);
